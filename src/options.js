@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 import {
   Container,
   Table,
@@ -8,24 +8,22 @@ import {
 } from "semantic-ui-react";
 
 const Options = ({ OptionProps, setOptionProps }) => {
-  const handleKeyPress = useCallback(
-    (e) => {
-      if (e.key === "b") {
+  useEffect(() => {
+    const handleUp = (event) => {
+      if (event.key === "b") {
         setOptionProps({
           ...OptionProps,
           isbillShow: OptionProps.isbillShow === true ? false : true
         });
       }
-    },
-    [OptionProps, setOptionProps]
-  );
-
-  useEffect(() => {
-    window.addEventListener("keyup", (e) => handleKeyPress(e));
-    return () => {
-      window.removeEventListener("keyup", (e) => handleKeyPress(e));
     };
-  }, [handleKeyPress]);
+
+    window.addEventListener("keyup", handleUp);
+
+    return () => {
+      window.removeEventListener("keyup", handleUp);
+    };
+  }, [setOptionProps, OptionProps]);
 
   return (
     <Container className="optionHolderDiv heightSetOption">
